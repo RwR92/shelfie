@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shelfie</title>
+
+    <!-- Bootstrap first, then our own CSS so it can override Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<main class="container my-4">
+    <h1>Shelfie</h1>
+
+    <!-- JavaScript replaces this text with a count or an error message -->
+    <p id="status">Loading books…</p>
+
+    <!-- JavaScript fills this list with one <li> per book -->
+    <ul id="book-list" class="list-group"></ul>
+</main>
+
+<!-- type="module": allows import/export and waits until the HTML is loaded -->
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
