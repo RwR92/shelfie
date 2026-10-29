@@ -5,13 +5,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
     private final BookRepository bookRepository;
     private final OpenLibraryClient openLibraryClient;
 
-    public BookService(BookRepository bookRepository, OpenLibraryClient openLibraryClient) {
+    BookService(BookRepository bookRepository, OpenLibraryClient openLibraryClient) {
         this.bookRepository = bookRepository;
         this.openLibraryClient = openLibraryClient;
     }
@@ -30,7 +31,7 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public BookDetailDto findById(long id) {
+    public BookDetailDto findById(Long id) {
         return bookRepository.findById(id)
                 .map(BookDetailDto::from)
                 .orElseThrow(() -> new NotFoundException("Book " + id + " not found"));
@@ -40,5 +41,26 @@ public class BookService {
         return openLibraryClient.search(query).stream()
                 .map(OpenLibraryBookDto::from)
                 .toList();
+    }
+
+    public ImportResult importBook(String olKey) {
+        Optional<Book> existing = bookRepository.findByOpenLibraryKey(olKey);
+        if (existing.isPresent()) {
+            return new ImportResult(BookDto.from(existing.get()), false);
+        }
+
+        OpenLibraryDoc doc = openLibraryClient.findByKey(olKey)
+                .orElseThrow(() -> new NotFoundException("No book with key " + olKey + " on Open Library"));
+
+        OpenLibraryBookDto data = OpenLibraryBookDto.from(doc);
+        Book saved = bookRepository.save(new Book(
+                data.title(),
+                data.author(),
+                data.publishYear(),
+                data.olKey(),
+                data.coverUrl()
+        ));
+
+        return new ImportResult(BookDto.from(saved), true);
     }
 }

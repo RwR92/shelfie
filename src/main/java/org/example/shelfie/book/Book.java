@@ -18,14 +18,24 @@ public class Book {
     private Integer publishYear;
     @OneToMany(mappedBy = "book")
     private List<Review> reviews = new ArrayList<>();
+    @Column(unique = true)
+    private String openLibraryKey;
+
+    private String coverUrl;
 
     protected Book() {
     }
 
     public Book(String title, String author, Integer publishYear) {
+        this(title, author, publishYear, null, null);
+    }
+
+    public Book(String title, String author, Integer publishYear, String openLibraryKey, String coverUrl) {
         this.title = title;
         this.author = author;
         this.publishYear = publishYear;
+        this.openLibraryKey = openLibraryKey;
+        this.coverUrl = coverUrl;
     }
 
     public Long getId() {
@@ -46,5 +56,13 @@ public class Book {
 
     public List<Review> getReviews() {
         return reviews;
+    }
+
+    public String getOpenLibraryKey() {
+        return openLibraryKey;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
     }
 }

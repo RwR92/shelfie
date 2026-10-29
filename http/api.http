@@ -36,3 +36,12 @@ GET http://localhost:8080/api/books/search?q=lord of the rings
 
 ### Search without q (expect 400)
 GET http://localhost:8080/api/books/search
+
+### Import The Hobbit (201 the first time, 200 after)
+POST http://localhost:8080/api/books/import/OL27482W
+
+### Import an unknown key (expect 404)
+POST http://localhost:8080/api/books/import/OL999999999W
+
+### Invalid key format (expect 404, never reaches Open Library)
+POST http://localhost:8080/api/books/import/hello
