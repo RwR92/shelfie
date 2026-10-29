@@ -1,7 +1,9 @@
 package org.example.shelfie.book;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,5 +21,17 @@ public class BookService {
                 .stream()
                 .map(BookDto::from)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Book> findAllEntities() {
+        return bookRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public BookDetailDto findById(long id) {
+        return bookRepository.findById(id)
+                .map(BookDetailDto::from)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
     }
 }

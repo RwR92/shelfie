@@ -1,16 +1,18 @@
 package org.example.shelfie.book;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class BookSeeder implements CommandLineRunner {
+@Order(2)
+class BookSeeder implements CommandLineRunner {
 
     private final BookRepository bookRepository;
 
-    public BookSeeder(BookRepository bookRepository) {
+    BookSeeder(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
