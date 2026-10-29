@@ -9,9 +9,11 @@ import java.util.List;
 @Service
 public class BookService {
     private final BookRepository bookRepository;
+    private final OpenLibraryClient openLibraryClient;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, OpenLibraryClient openLibraryClient) {
         this.bookRepository = bookRepository;
+        this.openLibraryClient = openLibraryClient;
     }
 
     @Transactional(readOnly = true)
@@ -32,5 +34,11 @@ public class BookService {
         return bookRepository.findById(id)
                 .map(BookDetailDto::from)
                 .orElseThrow(() -> new NotFoundException("Book " + id + " not found"));
+    }
+
+    public List<OpenLibraryBookDto> search(String query) {
+        return openLibraryClient.search(query).stream()
+                .map(OpenLibraryBookDto::from)
+                .toList();
     }
 }

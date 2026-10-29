@@ -1,9 +1,6 @@
 package org.example.shelfie.book;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +22,11 @@ public class BookController {
     @GetMapping("/{id}")
     public BookDetailDto getBookById(@PathVariable Long id) {
         return bookService.findById(id);
+    }
+
+    @GetMapping("/search")
+    public List<OpenLibraryBookDto> search(@RequestParam String q) {
+        return bookService.search(q);
     }
 
 }

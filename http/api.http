@@ -27,3 +27,12 @@ GET http://localhost:8080/api/shelves/999/entries
 
 ### Invalid id, not a number (expect 400)
 GET http://localhost:8080/api/shelves/abc/entries
+
+### Search Open Library
+GET http://localhost:8080/api/books/search?q=tolkien
+
+### Search with spaces
+GET http://localhost:8080/api/books/search?q=lord of the rings
+
+### Search without q (expect 400)
+GET http://localhost:8080/api/books/search
