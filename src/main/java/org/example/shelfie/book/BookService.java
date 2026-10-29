@@ -1,9 +1,8 @@
 package org.example.shelfie.book;
 
-import org.springframework.http.HttpStatus;
+import org.example.shelfie.common.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -32,6 +31,6 @@ public class BookService {
     public BookDetailDto findById(long id) {
         return bookRepository.findById(id)
                 .map(BookDetailDto::from)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
+                .orElseThrow(() -> new NotFoundException("Book " + id + " not found"));
     }
 }

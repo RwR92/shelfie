@@ -21,3 +21,9 @@ GET http://localhost:8080/api/shelves/3/entries
 
 ### My stats
 GET http://localhost:8080/api/stats/me
+
+### Unknown shelf (expect 404)
+GET http://localhost:8080/api/shelves/999/entries
+
+### Invalid id, not a number (expect 400)
+GET http://localhost:8080/api/shelves/abc/entries

@@ -2,10 +2,9 @@ package org.example.shelfie.shelf;
 
 import org.example.shelfie.auth.AppUser;
 import org.example.shelfie.auth.CurrentUserService;
-import org.springframework.http.HttpStatus;
+import org.example.shelfie.common.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class ShelfService {
 
         Shelf shelf = shelfRepository.findById(shelfId)
                 .filter(s -> s.getOwner().getId().equals(user.getId()))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shelf not found"));
+                .orElseThrow(() -> new NotFoundException("Shelf " + shelfId + " not found"));
 
         return shelf.getEntries().stream()
                 .map(ShelfEntryDto::from)
