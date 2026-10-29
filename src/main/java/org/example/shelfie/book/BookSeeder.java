@@ -8,11 +8,11 @@ import java.util.List;
 
 @Component
 @Order(2)
-public class BookSeeder implements CommandLineRunner {
+class BookSeeder implements CommandLineRunner {
 
     private final BookRepository bookRepository;
 
-    public BookSeeder(BookRepository bookRepository) {
+    BookSeeder(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 

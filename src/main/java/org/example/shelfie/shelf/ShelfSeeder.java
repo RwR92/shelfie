@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @Order(3)
-public class ShelfSeeder implements CommandLineRunner {
+class ShelfSeeder implements CommandLineRunner {
 
     private final ShelfRepository shelfRepository;
     private final CurrentUserService currentUserService;
