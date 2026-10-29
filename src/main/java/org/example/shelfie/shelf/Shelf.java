@@ -3,6 +3,9 @@ package org.example.shelfie.shelf;
 import jakarta.persistence.*;
 import org.example.shelfie.auth.AppUser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Shelf {
     @Id
@@ -17,6 +20,9 @@ public class Shelf {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "owner_id")
     private AppUser owner;
+
+    @OneToMany(mappedBy = "shelf", cascade = CascadeType.ALL)
+    private List<ShelfEntry> entries = new ArrayList<>();
 
     protected Shelf() {}
 
@@ -37,5 +43,11 @@ public class Shelf {
     }
     public ShelfType getType() {
         return type;
+    }
+    public List<ShelfEntry> getEntries() {
+        return entries;
+    }
+    public void addEntry(ShelfEntry entry) {
+        entries.add(entry);
     }
 }

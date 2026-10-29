@@ -20,4 +20,9 @@ public class BookService {
                 .map(BookDto::from)
                 .toList();
     }
+
+    @Transactional(readOnly = true)
+    public List<Book> findAllEntities(){
+        return bookRepository.findAll();
+    }
 }
