@@ -1,15 +1,17 @@
 package org.example.shelfie.book;
 
+import org.example.shelfie.common.ExternalServiceException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 
 import java.time.Duration;
 import java.util.List;
 
 @Component
-public class OpenLibraryClient {
+class OpenLibraryClient {
 
     private static final String FIELDS = "key,title,author_name,first_publish_year,cover_i";
 
@@ -27,19 +29,24 @@ public class OpenLibraryClient {
     }
 
     List<OpenLibraryDoc> search(String query) {
-        OpenLibrarySearchResponse response = restClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/search.json")
-                        .queryParam("q", query)
-                        .queryParam("fields", FIELDS)
-                        .queryParam("limit", 10)
-                        .build())
-                .retrieve()
-                .body(OpenLibrarySearchResponse.class);
+        try {
+            OpenLibrarySearchResponse response = restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/search.json")
+                            .queryParam("q", query)
+                            .queryParam("fields", FIELDS)
+                            .queryParam("limit", 10)
+                            .build())
+                    .retrieve()
+                    .body(OpenLibrarySearchResponse.class);
 
-        if (response == null || response.docs() == null) {
-            return List.of();
+            if (response == null || response.docs() == null) {
+                return List.of();
+            }
+            return response.docs();
+
+        } catch (RestClientException ex) {
+            throw new ExternalServiceException("Open Library is not available right now", ex);
         }
-        return response.docs();
     }
 }
