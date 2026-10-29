@@ -1,5 +1,5 @@
-const API_URL = "http://localhost:8080/api";
-
+// Dev mode (IntelliJ's server) calls the backend directly; behind Nginx we use the same origin
+const API_URL = location.port === "63342" ? "http://localhost:8080/api" : "/api";
 async function fetchBooks(){
     const response = await fetch (`${API_URL}/books`);
 
