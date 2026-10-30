@@ -21,7 +21,7 @@ public class Shelf {
     @JoinColumn(name = "owner_id")
     private AppUser owner;
 
-    @OneToMany(mappedBy = "shelf", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "shelf", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShelfEntry> entries = new ArrayList<>();
 
     protected Shelf() {}
@@ -49,5 +49,8 @@ public class Shelf {
     }
     public void addEntry(ShelfEntry entry) {
         entries.add(entry);
+    }
+    public void removeEntry(ShelfEntry entry) {
+        entries.remove(entry);
     }
 }
