@@ -1,0 +1,29 @@
+### Review book 4 (201 the first time; there's no delete yet, so 409 after that)
+POST {{baseUrl}}/books/4/reviews
+Content-Type: application/json
+
+{ "rating": 4, "text": "Practical and timeless." }
+
+### Review the same book again (409)
+POST {{baseUrl}}/books/4/reviews
+Content-Type: application/json
+
+{ "rating": 5 }
+
+### Rating out of range (400, with errors.rating)
+POST {{baseUrl}}/books/5/reviews
+Content-Type: application/json
+
+{ "rating": 7 }
+
+### Missing rating (400)
+POST {{baseUrl}}/books/5/reviews
+Content-Type: application/json
+
+{ }
+
+### Unknown book (404)
+POST {{baseUrl}}/books/999/reviews
+Content-Type: application/json
+
+{ "rating": 3 }

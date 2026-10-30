@@ -1,9 +1,8 @@
 package org.example.shelfie.book;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,4 +26,15 @@ public class BookController {
         return bookService.findById(id);
     }
 
+    @GetMapping("/search")
+    public List<OpenLibraryBookDto> search(@RequestParam String q) {
+        return bookService.search(q);
+    }
+
+    @PostMapping("/import/{olKey:OL\\d+W}")
+    public ResponseEntity<BookDto> importBook(@PathVariable String olKey) {
+        ImportResult result = bookService.importBook(olKey);
+        HttpStatus status = result.created() ? HttpStatus.CREATED : HttpStatus.OK;
+        return ResponseEntity.status(status).body(result.book());
+    }
 }

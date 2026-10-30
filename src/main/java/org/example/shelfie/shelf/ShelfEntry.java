@@ -32,6 +32,11 @@ public class ShelfEntry {
         this.addedAt = LocalDateTime.now();
     }
 
+    public void moveTo(Shelf newShelf) {
+        this.shelf = newShelf;
+        this.finishedAt = newShelf.getType() == ShelfType.READ ? LocalDateTime.now() : null;
+    }
+
     public Long getId() {
         return id;
     }

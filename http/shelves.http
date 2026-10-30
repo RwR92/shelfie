@@ -1,0 +1,75 @@
+### My shelves (1 = Want to read, 2 = Reading, 3 = Read)
+GET {{baseUrl}}/shelves
+
+### Entries on the Read shelf
+GET {{baseUrl}}/shelves/3/entries
+
+### Unknown shelf (404)
+GET {{baseUrl}}/shelves/999/entries
+
+### Id is not a number (400)
+GET {{baseUrl}}/shelves/abc/entries
+
+
+### ---------- Entry lifecycle: run these in order, top to bottom ----------
+
+### 1. Put book 5 on "Want to read" (201), remembers the new entry's id
+POST {{baseUrl}}/shelves/1/entries
+Content-Type: application/json
+
+{ "bookId": 5 }
+
+> {%
+    client.global.set("entryId", response.body.id);
+%}
+
+### 2. The same book again (409)
+POST {{baseUrl}}/shelves/1/entries
+Content-Type: application/json
+
+{ "bookId": 5 }
+
+### 3. Move it to "Read" (200, finishedAt is set)
+PATCH {{baseUrl}}/entries/{{entryId}}
+Content-Type: application/json
+
+{ "shelfId": 3 }
+
+### 4. Move it to the shelf it's already on (200, nothing changes)
+PATCH {{baseUrl}}/entries/{{entryId}}
+Content-Type: application/json
+
+{ "shelfId": 3 }
+
+### 5. Move it to an unknown shelf (404)
+PATCH {{baseUrl}}/entries/{{entryId}}
+Content-Type: application/json
+
+{ "shelfId": 999 }
+
+### 6. Delete it (204)
+DELETE {{baseUrl}}/entries/{{entryId}}
+
+### 7. Delete it again (404)
+DELETE {{baseUrl}}/entries/{{entryId}}
+
+
+### ---------- Invalid input ----------
+
+### Unknown book (404)
+POST {{baseUrl}}/shelves/1/entries
+Content-Type: application/json
+
+{ "bookId": 999 }
+
+### Missing bookId (400, with errors.bookId)
+POST {{baseUrl}}/shelves/1/entries
+Content-Type: application/json
+
+{ }
+
+### Broken JSON (400)
+POST {{baseUrl}}/shelves/1/entries
+Content-Type: application/json
+
+{ "bookId":

@@ -50,4 +50,24 @@ public class ShelfRepositoryTest {
         assertThatThrownBy(() -> shelfRepository.saveAndFlush(shelf))
                 .isInstanceOf(DataIntegrityViolationException.class);
     }
+
+    @Test
+    void removingAnEntryFromItsShelfDeletesIt() {
+        AppUser user = entityManager.persist(new AppUser("carol"));
+        Book book = entityManager.persist(new Book("Dune", "Frank Herbert", 1965));
+
+        Shelf shelf = new Shelf("Read", ShelfType.READ, user);
+        shelf.addEntry(new ShelfEntry(shelf, book));
+        shelfRepository.save(shelf);
+        entityManager.flush();
+        entityManager.clear();
+
+        Shelf loaded = shelfRepository.findById(shelf.getId()).orElseThrow();
+        loaded.removeEntry(loaded.getEntries().get(0));
+        entityManager.flush();
+        entityManager.clear();
+
+        Shelf reloaded = shelfRepository.findById(shelf.getId()).orElseThrow();
+        assertThat(reloaded.getEntries()).isEmpty();
+    }
 }
