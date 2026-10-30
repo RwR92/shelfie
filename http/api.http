@@ -45,3 +45,33 @@ POST http://localhost:8080/api/books/import/OL999999999W
 
 ### Invalid key format (expect 404, never reaches Open Library)
 POST http://localhost:8080/api/books/import/hello
+
+### Put book 4 on shelf 3 (expect 201)
+POST http://localhost:8080/api/shelves/3/entries
+Content-Type: application/json
+
+{ "bookId": 4 }
+
+### Same book again (expect 409)
+POST http://localhost:8080/api/shelves/3/entries
+Content-Type: application/json
+
+{ "bookId": 4 }
+
+### Unknown book (expect 404)
+POST http://localhost:8080/api/shelves/3/entries
+Content-Type: application/json
+
+{ "bookId": 999 }
+
+### Missing bookId (expect 400 with errors)
+POST http://localhost:8080/api/shelves/3/entries
+Content-Type: application/json
+
+{ }
+
+### Broken JSON (expect 400)
+POST http://localhost:8080/api/shelves/3/entries
+Content-Type: application/json
+
+{ "bookId":

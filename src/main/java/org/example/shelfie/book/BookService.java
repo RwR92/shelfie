@@ -63,4 +63,10 @@ public class BookService {
 
         return new ImportResult(BookDto.from(saved), true);
     }
+
+    @Transactional(readOnly = true)
+    public Book getEntity(Long id){
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Book " + id + " not found"));
+    }
 }

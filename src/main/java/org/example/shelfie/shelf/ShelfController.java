@@ -1,9 +1,8 @@
 package org.example.shelfie.shelf;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +24,12 @@ public class ShelfController {
     @GetMapping("/{id}/entries")
     public List<ShelfEntryDto> getEntries(@PathVariable Long id){
         return shelfService.findEntries(id);
+    }
+
+    @PostMapping("/{id}/entries")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ShelfEntryDto addEntry(@PathVariable Long id, @Valid @RequestBody AddEntryRequest request) {
+        return shelfService.addEntry(id, request);
     }
 
 }
