@@ -1,0 +1,35 @@
+### All books
+GET {{baseUrl}}/books
+
+### One book with reviews and average rating
+GET {{baseUrl}}/books/1
+
+### A book without reviews: averageRating null, reviews []
+GET {{baseUrl}}/books/5
+
+### Unknown book (404)
+GET {{baseUrl}}/books/999
+
+
+### ---------- Open Library search ----------
+
+### Search
+GET {{baseUrl}}/books/search?q=tolkien
+
+### Search with spaces (encoded by the client)
+GET {{baseUrl}}/books/search?q=lord of the rings
+
+### Missing q (400)
+GET {{baseUrl}}/books/search
+
+
+### ---------- Import ----------
+
+### Import The Hobbit (201 the first time, 200 after that)
+POST {{baseUrl}}/books/import/OL27482W
+
+### Unknown key (404 from Open Library)
+POST {{baseUrl}}/books/import/OL999999999W
+
+### Invalid key format (404, never reaches Open Library)
+POST {{baseUrl}}/books/import/hello
