@@ -5,7 +5,7 @@ a Spring Boot REST API, JPA, a plain JavaScript frontend, Docker, GitHub Actions
 
 ## Status
 
-**v0.4.0 – Integration, errors and validation** (in progress)
+**v0.4.0 – Integration, errors and validation**
 
 - Search and import real books from the [Open Library API](https://openlibrary.org/developers/api) with `RestClient`
 - Put books on shelves, move them between shelves, remove them, and write reviews
