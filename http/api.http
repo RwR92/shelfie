@@ -75,3 +75,33 @@ POST http://localhost:8080/api/shelves/3/entries
 Content-Type: application/json
 
 { "bookId":
+
+### Review book 3 (expect 201)
+POST http://localhost:8080/api/books/3/reviews
+Content-Type: application/json
+
+  { "rating": 4, "text": "Bleak but brilliant." }
+
+### Review book 3 again (expect 409)
+POST http://localhost:8080/api/books/3/reviews
+Content-Type: application/json
+
+{ "rating": 5 }
+
+### Rating out of range (expect 400 with errors.rating)
+POST http://localhost:8080/api/books/4/reviews
+Content-Type: application/json
+
+{ "rating": 7 }
+
+### Missing rating (expect 400)
+POST http://localhost:8080/api/books/4/reviews
+Content-Type: application/json
+
+{ }
+
+### Unknown book (expect 404)
+POST http://localhost:8080/api/books/999/reviews
+Content-Type: application/json
+
+{ "rating": 3 }
